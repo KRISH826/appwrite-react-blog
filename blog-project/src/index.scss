@@ -21,22 +21,10 @@ p {
 }
 
 ul {
+  margin: 00;
+
   li {
     margin: 0;
     padding: 0;
   }
-}
-
-a {
-  text-decoration: none;
-
-  &:hover {
-    text-decoration: none;
-  }
-}
-
-button:is(:focus, :focus-visible, :focus-within) {
-  box-shadow: none;
-  outline: none;
-  outline-color: transparent;
 }
