@@ -1,28 +1,13 @@
-/** @format */
+import React, { forwardRef, useId } from 'react'
 
-import React, { useId } from "react";
-
-const Input = React.forwardRef(function Input(
-  { label, type = "text", className = "", ...props },
-  ref
-) {
-  const id = useId();
+const Input = forwardRef(function Input({ placeholder = "Enter Your Email", label, type = "text", className = "", ...props }, ref) {
+  const id = useId()
   return (
-    <div className='w-full'>
-      {label && (
-        <label className='inline-block mb-1 pl-1' htmlFor={id}>
-          {label}
-        </label>
-      )}
-      <input
-        type={type}
-        className={`px-3 py-2 rounded-lg bg-white text-black outline-none focus:bg-gray-50 duration-200 border border-gray-200 w-full ${className}`}
-        ref={ref}
-        {...props}
-        id={id}
-      />
+    <div>
+      {label && <label className='inline-block text-start mb-2' htmlFor={id}>{label}</label>}
+      <input type={type} name="username" id={id} placeholder={placeholder} className={`${className} w-full px-4 py-3 rounded-md dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 focus:dark:border-violet-400`} ref={ref} />
     </div>
-  );
-});
+  )
+})
 
-export default Input;
+export default Input
