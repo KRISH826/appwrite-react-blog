@@ -1,21 +1,12 @@
 /** @format */
 
 import React, { useEffect, useState } from "react";
-import {
-  useNavigate,
-  BrowserRouter as Router,
-  Routes,
-  Route,
-} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import Header from "./Header";
-import Footer from "./Footer";
-
 const AuthLayout = ({ children, authentication = true }) => {
   const navigate = useNavigate();
   const authStatus = useSelector((state) => state.auth.status);
   const [loading, setloading] = useState(true);
-  const [auth, setauth] = useState(false);
 
   useEffect(() => {
     if (authentication && authStatus !== authentication) {

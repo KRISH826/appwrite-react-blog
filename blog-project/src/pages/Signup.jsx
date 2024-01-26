@@ -12,22 +12,19 @@ const Signup = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
-  const [errorr, seterrorr] = useState("");
+  const [error, setError] = useState("");
 
-  const signupHandle = async (data) => {
-    seterrorr("");
+  const create = async (data) => {
+    setError("");
     try {
       const userData = await authService.createAccount(data);
       if (userData) {
         const userData = await authService.getCurrentUser();
-        if (userData) {
-          dispatch(login(userData));
-        }
+        if (userData) dispatch(login(userData));
         navigate("/login");
       }
     } catch (error) {
-      seterrorr(error);
-      console.log(error);
+      setError(error.message);
     }
   };
 
@@ -39,14 +36,14 @@ const Signup = () => {
         <div className='mb-8 text-center' bis_skin_checked='1'>
           <h1 className='my-3 text-4xl font-bold'>Sign Up</h1>
           <p className='text-sm text-gray-400'>Create Your Own Account</p>
+          {error && <p className='text-red-600 mt-8 text-center'>{error}</p>}
         </div>
-        <form className='space-y-12' onSubmit={handleSubmit(signupHandle)}>
+        <form className='space-y-12' onSubmit={handleSubmit(create)}>
           <div className='space-y-4' bis_skin_checked='1'>
             <div bis_skin_checked='1'>
               <Input
-                placeholder='Enter your Name'
-                label='Name'
-                type='text'
+                label='Full Name: '
+                placeholder='Enter your full name'
                 {...register("name", {
                   required: true,
                 })}
@@ -54,24 +51,25 @@ const Signup = () => {
             </div>
             <div bis_skin_checked='1'>
               <Input
-                placeholder='Enter your Name'
-                label='Email'
+                label='Email: '
+                placeholder='Enter your email'
                 type='email'
                 {...register("email", {
                   required: true,
                   validate: {
-                    matchPattern: (value) =>
-                      /^([\w\.\-_]+)?\w+@[\w-_]+(\.\w+){1,}$/gim.test(value) ||
-                      "Invalid Address",
+                    matchPatern: (value) =>
+                      /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(
+                        value
+                      ) || "Email address must be a valid address",
                   },
                 })}
               />
             </div>
             <div bis_skin_checked='1'>
               <Input
+                label='Password: '
                 type='password'
-                label='Enter Password'
-                placeholder='Password'
+                placeholder='Enter your password'
                 {...register("password", {
                   required: true,
                 })}
