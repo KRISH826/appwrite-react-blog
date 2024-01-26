@@ -2,61 +2,91 @@
 
 import React from "react";
 import Button from "./ui/Button";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import authService from "../appwrite/auth/auth";
+import { logout } from "../redux/featured/authSlice";
 
 const Header = () => {
+  const authStatus = useSelector((state) => state.auth.status);
+  const dispatch = useDispatch();
+  console.log(authStatus);
+  const navigate = useNavigate();
+  const LoginHandler = () => {
+    navigate("/login");
+  };
+  const SignupHandler = () => {
+    navigate("/signup");
+  };
+
+  const logOutHandler = () => {
+    authService.logOutUser().then(() => {
+      dispatch(logout());
+    });
+    navigate("/login");
+    console.log("log out sucessfull");
+  };
   return (
     <header className='p-4 bg-gray-800 text-gray-100'>
-      <div
-        className='container flex justify-between h-16 mx-auto'
-        bis_skin_checked='1'>
-        <div className='flex items-center gap-10' bis_skin_checked='1'>
-          <a
+      <div className='container flex justify-between h-16 mx-auto'>
+        <div className='flex items-center flex-1 gap-10'>
+          <Link
             rel='noopener noreferrer'
-            href='#'
+            to='/'
             aria-label='Back to homepage'
             className='flex text-4xl font-satisfy items-center p-2'>
             Frank Blog
-          </a>
+          </Link>
           <ul className='hidden items-center gap-6 space-x-3 lg:flex'>
             <li className='flex'>
-              <a
+              <Link
                 rel='noopener noreferrer'
-                href='#'
+                to='/'
                 className='flex items-center py-2 -mb-1 border-b-2 border-transparent'>
                 Posts
-              </a>
+              </Link>
             </li>
             <li className='flex'>
-              <a
+              <Link
                 rel='noopener noreferrer'
-                href='#'
+                to='/'
                 className='flex items-center py-2 -mb-1 border-b-2 border-transparent text-violet-400 border-violet-400'>
                 Add Posts
-              </a>
+              </Link>
             </li>
             <li className='flex'>
-              <a
+              <Link
                 rel='noopener noreferrer'
-                href='#'
+                to='/'
                 className='flex items-center py-2 -mb-1 border-b-2 border-transparent'>
                 Link
-              </a>
+              </Link>
             </li>
             <li className='flex'>
-              <a
+              <Link
                 rel='noopener noreferrer'
-                href='#'
+                to='/'
                 className='flex items-center py-2 -mb-1 border-b-2 border-transparent'>
                 Link
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
-        <div
-          className='items-center flex gap-3 flex-shrink-0'
-          bis_skin_checked='1'>
-          <Button>Log In</Button>
-          <Button>Sign Up</Button>
+        <div className='items-center justify-end flex gap-3 flex-1 flex-shrink-0'>
+          {authStatus ? (
+            <Button onClick={logOutHandler} className='w-[125px]'>
+              Log Out
+            </Button>
+          ) : (
+            <Button onClick={LoginHandler} className='w-[125px]'>
+              Sign In
+            </Button>
+          )}
+          {!authStatus && (
+            <Button onClick={SignupHandler} className='w-[125px]'>
+              Sign Up
+            </Button>
+          )}
         </div>
         <button className='p-4 lg:hidden'>
           <svg

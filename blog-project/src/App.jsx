@@ -7,15 +7,16 @@ import authService from "./appwrite/auth/auth";
 import { login, logout } from "./redux/featured/authSlice";
 import config from "./config/config";
 import { Routes, Route } from "react-router-dom";
-import { Outlet } from "react-router-dom";
-import AuthLayout from "./components/AuthLayout";
-import Login from "./pages/Login";
+import { Outlet, useLocation } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
 function App() {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
+  const location = useLocation();
+  const isLoggedIn = location.pathname === "/login";
+  const isSignUp = location.pathname === "/signup";
   useEffect(() => {
     console.log(config.appwriteUrl);
     authService
@@ -33,9 +34,14 @@ function App() {
   }, []);
   return !loading ? (
     <>
-      <Header />
+      {/* {!isLoggedIn || (!isSignUp && <Header />)}
       <Outlet />
-      <Footer />
+      {!isLoggedIn || (!isSignUp && <Footer />)} */}
+      {!isLoggedIn && !isSignUp ? <Header /> : null}
+      <main>
+        <Outlet />
+      </main>
+      {!isLoggedIn && !isSignUp ? <Footer /> : null}
     </>
   ) : null;
 }
